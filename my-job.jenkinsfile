@@ -6,7 +6,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword([credentialsId: 'artifactory', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     script {
-                        sh 'curl -I https://www.keycdn.com'
+                        sh 'curl https://www.keycdn.com'
                     }
                 }
             }
