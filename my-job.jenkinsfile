@@ -1,0 +1,21 @@
+properties([parameters([
+    string(name: 'ARTIFACTORY_URL', defaultValue: 'https:jfrog.com/artifactory'),
+    string(name: 'ARTIFACT_PATH', 'artifact-0.0.0-0.tgz')
+])])
+
+pipeline {
+    agent any
+    
+    stages {
+        stage('Test Curl') {
+            steps {
+                withCredentials([usernamePassword([credentialsId: 'artifactory', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    script {
+                        sh 'curl -u $DOCKER_USERNAME:$DOCKER_PASSWORD ${ARTIFACTORY_URL}/${ARTIFACT_PATH} -o common-lib.tgz'
+                    }
+                }
+            }
+        }
+    }
+}
+
