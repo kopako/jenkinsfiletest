@@ -1,7 +1,9 @@
-properties([parameters([
-    string(name: 'ARTIFACTORY_URL', defaultValue: 'https:jfrog.com/artifactory'),
-    string(name: 'ARTIFACT_PATH', 'artifact-0.0.0-0.tgz')
-])])
+properties([
+    parameters([
+        string(name: 'ARTIFACTORY_URL', defaultValue: 'https:jfrog.com/artifactory'),
+        string(name: 'ARTIFACT_PATH', 'artifact-0.0.0-0.tgz')
+    ])
+])
 
 pipeline {
     agent any
