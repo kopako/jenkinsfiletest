@@ -1,6 +1,6 @@
 properties([parameters([
-    string(name: 'ARTIFACTORY_URL', defaultValue: 'https:jfrog.com/artifactory'),
-    string(name: 'ARTIFACT_PATH', 'artifact-0.0.0-0.tgz')
+    string(name: 'ARTIFACTORY_URL'),
+    string(name: 'ARTIFACT_PATH')
 ])])
 
 pipeline {
