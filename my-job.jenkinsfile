@@ -1,6 +1,7 @@
 properties([parameters([
     string(name: 'ARTIFACTORY_URL'),
-    string(name: 'ARTIFACT_PATH')
+    string(name: 'ARTIFACT_PATH'),
+    string(name: 'COMMON_BOB_LIBRARY_VERSION', defaultValue: '0.0.0-2')
 ])])
 
 pipeline {
@@ -10,8 +11,13 @@ pipeline {
         stage('Test Curl') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'artifactory', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    script {
-                        sh 'curl -u $DOCKER_USERNAME:$DOCKER_PASSWORD ${ARTIFACTORY_URL}/${ARTIFACT_PATH} -o common-lib.tgz'
+                    withEnv(["version=${COMMON_BOB_LIBRARY_VERSION}"]){
+                        script {
+                            sh 'curl --retry-delay 5 --retry-max-time 5 --retry 3 -L -u ${DOCKER_USERNAME}:${DOCKER_PASSWORD} ${ARTIFACTORY_URL}/${ARTIFACT_PATH}$version.tgz | tar -xvz'
+                            sh 'ls -la'
+                            sh "file libs/*"
+                            sh "rm -rf libs"
+                        }
                     }
                 }
             }
